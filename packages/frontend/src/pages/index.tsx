@@ -3,6 +3,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { BigNumber, ethers } from 'ethers';
 import contract from '@wave-portal/backend/artifacts/contracts/WavePortal.sol/WavePortal.json';
 import { formatAddress } from '../helpers/formatAddress';
+import { formatDate } from '../helpers/formatDate';
 
 declare var window: Window & typeof globalThis & {
   ethereum: any;
@@ -21,9 +22,6 @@ const Home: NextPage = () => {
   const [message, setMessage] = useState("")
 
   const CONTRACT_ADDRESS = String(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
-
-  console.log(CONTRACT_ADDRESS.length);
-
 
   async function checkIfWalletIsConnected() {
     try {
@@ -184,7 +182,7 @@ const Home: NextPage = () => {
           <ul key={wave.id.toString()} className="flex justify-center align-middle">
             <li className="list-disc text-indigo-600">
               <div className="flex flex-col text-black">
-                <p>{wave.message}</p>
+                <p>{wave.message}<span className="text-gray-700"> - {formatDate(wave.date.toString())}</span></p>
                 <span className="text-gray-700">{formatAddress(wave.owner)}</span>
               </div>
             </li>
