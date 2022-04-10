@@ -22,6 +22,9 @@ const Home: NextPage = () => {
 
   const CONTRACT_ADDRESS = String(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
 
+  console.log(CONTRACT_ADDRESS.length);
+
+
   async function checkIfWalletIsConnected() {
     try {
       const { ethereum } = window;
