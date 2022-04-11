@@ -33,7 +33,7 @@ describe("Wave Portal test suit", function () {
   });
 
   describe("Transactions", () => {
-    it("Should create a new wave and give to the sender 0.0001 ether", async () => {
+    it("Should create a new wave", async () => {
       await wavePortal.wave("Hello");
 
       const waves = await wavePortal.getWaves();
@@ -41,12 +41,14 @@ describe("Wave Portal test suit", function () {
       expect(waves.length).to.equal(1);
 
       expect((await wavePortal.getTotalWaves()).toString()).to.equal("1");
+    });
 
-      const contractBalance = await ethers.provider.getBalance(
-        wavePortal.address
-      );
+    it("Should not create a new wave when the sender try to wave twice in a row now without waiting 15 min", async () => {
+      await wavePortal.wave("Hello");
 
-      expect(ethers.utils.formatEther(contractBalance)).to.equal("0.0999");
+      expect((await wavePortal.getTotalWaves()).toString()).to.equal("1");
+
+      await expect(wavePortal.wave("Hello")).to.be.revertedWith("Wait 15m");
     });
   });
 });
